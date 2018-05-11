@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            border: 1px solid red;
+        }
+
+        .wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .popover {
+            border: 1px solid red;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            white-space: nowrap;
+            padding: 10px;
+            margin-left: 10px;
+            background: white;
+            display: none;
+        }
+
+        .popover::before {
+            position: absolute;
+            right: 100%;
+            top: 5px;
+            border: 10px solid transparent;
+            border-right-color: red;
+            content: '';
+        }
+
+        .popover::after {
+            position: absolute;
+            right: 100%;
+            top: 5px;
+            border: 10px solid transparent;
+            border-right-color: white;
+            content: '';
+            margin-right: -1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper" class="wrapper">
+        <button id="clickMe">点我</button>
+        <div id="popover" class="popover">
+            浮层
+        </div>
+    </div>
+    <script>
+        clickMe.addEventListener('click', function () {
+            popover.style.display = 'block'
+            onetime(document, 'click', hide)
+        })
+        wrapper.addEventListener('click', function (e) {
+            e.stopPropagation()
+        })
+
+        function onetime(node, type, callback) {
+
+            // 创建事件
+            node.addEventListener(type, function (e) {
+                // 移除事件
+                e.target.removeEventListener(e.type, arguments.callee);
+                // 调用处理器
+                return callback(e);
+            });
+        }
+
+        function hide(e) {
+            // alert('hello')
+            popover.style.display = 'none'
+        }
+    </script>
+    <!-- <script async src="//jsfiddle.net/Ambler/cwoyba3b/embed/"></script> -->
+</body>
+
+</html>

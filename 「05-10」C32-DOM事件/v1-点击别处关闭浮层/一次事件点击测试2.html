@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #father {
+            border: 1px solid red;
+        }
+
+        #son1 {
+            border: 1px solid greenyellow;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        #son1>#son11 {
+            width: 20px;
+            border: 1px solid grey;
+            background-color: yellowgreen;
+            height: 20px;
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 100%;    
+        }
+    </style>
+</head>
+
+<body>
+    <div id="father">
+        father
+        <div id='son1'>son1
+            <div id="son11">
+
+            </div>
+        </div>
+    </div>
+    <script>
+        // 我很郁闷啊为啥这个「document.documentElement」可以只执行一次
+        // 而改为document就不能一次执行啊
+        // 我明白了，突然测试了一下，发现是onetime里的target问题
+        // 你只要改为currentTarget就可以满足node是document或者是documentElement的情况
+        // 如果只是target的话，只有「document.documentElement」是可以的
+        // 
+        son1.addEventListener('click', function() {
+            son11.style.display = 'block'
+            onetime(document.documentElement,'click', function() {
+                alert(1)
+                son11.style.display = 'none'
+            })                
+        })
+
+        father.addEventListener('click',function(e) {
+            e.stopPropagation()
+        })
+ 
+        // 创建一个一次性事件
+        function onetime(node, type, callback) {
+            // 创建事件
+            node.addEventListener(type, function (e) {
+                // 移除事件
+                e.target.removeEventListener(e.type, arguments.callee);
+                // 调用处理器
+                return callback(e);
+            });
+
+        }
+
+    </script>
+</body>
+
+</html>

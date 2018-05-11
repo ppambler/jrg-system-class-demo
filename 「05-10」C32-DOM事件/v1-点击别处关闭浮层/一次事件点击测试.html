@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #div1 {
+            border: 1px solid red;
+            height: 50px;
+            width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <script>
+        // 创建一个一次性事件
+        function onetime(node, type, callback) {
+
+            // 创建事件
+            node.addEventListener(type, function (e) {
+                // 移除事件
+                e.target.removeEventListener(e.type, arguments.callee);
+                // 调用处理器
+                return callback(e);
+            });
+
+        }
+        // 一个一次性事件
+        onetime(document.getElementById("div1"), "click", aff);
+
+        // 处理函数
+        function aff(e) {
+            alert("You'll only see this once!");
+        }
+    </script>
+</body>
+
+</html>
