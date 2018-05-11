@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <style>
         body {
             border: 1px solid red;
@@ -58,31 +59,42 @@
         </div>
     </div>
     <script>
-        clickMe.addEventListener('click', function () {
-            popover.style.display = 'block'
-            onetime(document, 'click', hide)
+    //     clickMe.addEventListener('click', function () {
+    //         popover.style.display = 'block'
+    //         onetime(document, 'click', hide)
+    //     })
+    //     wrapper.addEventListener('click', function (e) {
+    //         e.stopPropagation()
+    //     })
+
+    //     function onetime(node, type, callback) {
+
+    //         // 创建事件
+    //         node.addEventListener(type, function (e) {
+    //             // 移除事件
+    //             e.currentTarget.removeEventListener(e.type, arguments.callee);
+    //             // 调用处理器
+    //             return callback(e);
+    //         });
+    //     }
+
+    //     function hide(e) {
+    //         alert('hello')
+    //         popover.style.display = 'none'
+    //     }
+
+    // 用jQuery实现
+    $(clickMe).on('click',function() {
+            $(popover).show()
+            $(document).one('click',function() {
+                console.log('只执行一次')
+                $(popover).hide()
+            })
         })
-        wrapper.addEventListener('click', function (e) {
+        $(wrapper).on('click',function(e) {
             e.stopPropagation()
         })
-
-        function onetime(node, type, callback) {
-
-            // 创建事件
-            node.addEventListener(type, function (e) {
-                // 移除事件
-                e.target.removeEventListener(e.type, arguments.callee);
-                // 调用处理器
-                return callback(e);
-            });
-        }
-
-        function hide(e) {
-            // alert('hello')
-            popover.style.display = 'none'
-        }
-    </script>
-    <!-- <script async src="//jsfiddle.net/Ambler/cwoyba3b/embed/"></script> -->
+  </script>
 </body>
 
 </html>
