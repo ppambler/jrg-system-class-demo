@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- 取个特别的名字用于占位「&&&amount&&&」 -->
+    <h5>您的账户余额是：<span id='amount'>xxxamountyyy</span></h5>
+    <button id='button'>打钱</button>
+    <script>
+        button.addEventListener('click',(e) => {
+            // 1.动态创建一个script
+            let script = document.createElement('script')
+
+            // 2.创建一个回调函数
+            // 起个函数名「xxx6666」——随机的
+            let functionName = 'xxx'+parseInt(Math.random()*100000,10)
+            window[functionName] = function(result) {
+                if(result === 'success') {
+                    amount.innerText = amount.innerText - 1
+                } else {
+                    alert('您的账户余额为0，无法打钱')
+                }
+            }
+
+            // 3.请求地址
+            // 参数约定为callback
+            // debugger
+            script.src = 'http://jack.com:8002/pay?callback=' + functionName
+            
+            // 为body添加儿子script,不然就无法发生请求了，而用img的话就不需要了，为什么？
+            // 试出来的，谁知道啊！
+            document.body.appendChild(script)
+            // debugger
+            // 返回的脚本先执行，执行完后移除script,即监听这个script,一旦加载完就执行
+            script.onload = function(e) {
+                // 移除动态创建的script和删除回到函数
+                e.currentTarget.remove()
+                delete window[functionName]
+            }
+            
+            //脚本请求失败，就执行，总之状态码是「(failed)」,或者可认为没有拿到数据
+            script.onerror = function() {
+                alert('fail')
+                e.currentTarget.remove()
+                delete window[functionName]
+            }
+            
+        })
+    </script>
+</body>
+</html>
