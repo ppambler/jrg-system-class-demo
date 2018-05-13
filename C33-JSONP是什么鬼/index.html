@@ -36,7 +36,7 @@
             // 试出来的，谁知道啊！
             document.body.appendChild(script)
             // debugger
-            // 返回的脚本先执行，执行完后移除script,即监听这个script,一旦加载完就执行
+            // 先监听这个script,一旦加载完就执行，而不是先把响应的弄过来了才去监听，这里的请求是异步的
             script.onload = function(e) {
                 // 移除动态创建的script和删除回到函数
                 e.currentTarget.remove()
