@@ -26,6 +26,10 @@
   - 使用 XMLHttpRequest 发请求
   - 服务器返回 XML 格式的字符串
   - JS 解析 XML，并更新局部页面
+- XML并不友好，如「糟糕的API的使用」；于是服务器大多返回的是JSON格式的字符串「访问[JSON](http://json.org/json-zh.html)的官网，认为那种铁轨图用于展现其语法极其有味道」
+- JSON和JavaScript是两门语言，其中JSON抄袭了JavaScript，所以你懂的，请不要混淆了……
 - JSONP可以跨域，而AJAX由于同源策略的原因不能直接跨域
 - 让AJAX跨域？即突破同源策略的封锁，那么请使用CORS「跨站资源共享」的方式
+
+
 
