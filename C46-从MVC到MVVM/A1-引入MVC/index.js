@@ -21,7 +21,7 @@ function fakeData() {
         } = response
         console.log(data)
         console.log(method)
-        if (url === '/books/1' && method === 'get' && data=== undefined) {
+        if (url === '/books/1' && method === 'get' && data === undefined) {
             console.log('没有data的get')
             response.data = book
         } else if (url === '/books/1' && method === 'get' && data) {
@@ -35,28 +35,24 @@ function fakeData() {
     })
 }
 
-let model = {
-    data: {
-        name: '',
-        number: 0,
-        id: ''
-    },
-    fetch(id) {
-        return axios.get(`/books/${id}`).then((response) => {
-            this.data = response.data
-            return response
-        })
-    },
-    update(data) {
-        // **？：**这里给个数data.id为何意啊？
-        console.log(this)
-        console.log(2)
-        let id = this.data.id
-        console.log(data)
-        // **？：**这里为啥发生了两次get请求？
-        // **✔：**这个{data:data}可以简写成，也可以改为{xxxx:data}上传参数
-        //        这个参数的值是JSON格式的字符串对象→☞"{"number":3}"
-        return axios.get(`/books/${id}`,{
+// 面向对象写成MVC类
+function Model(options) {
+    this.data = options.data
+    //  **？：**设置这个为何何意啊？
+    this.resource = options.resource
+}
+// **？：**这是添加原型的最佳写法?
+Model.prototype.fetch = function (id) {
+    console.log(this.resource)
+    return axios.get(`/${this.resource}/${id}`).then((response) => {
+        this.data = response.data
+        return response
+    })
+}
+Model.prototype.update = function (data) {
+    let id = this.data.id
+    let resource = this.resource
+    return axios.get(`/${resource}/${id}`, {
             data: data
         })
         .then((response) => {
@@ -67,10 +63,34 @@ let model = {
             this.data = response.data
             return response
         })
-    }
+}
+// **？：**这形参这样写？会不会有点厉害了我的哥？
+function View({
+    el,
+    template
+}) {
+    this.el = el
+    this.template = template
+}
+View.prototype.render = function (data) {
+    let html = this.template.replace('__name__', data.name)
+        .replace('__number__', data.number)
+
+    $(this.el).html(html)
 }
 
-let view = {
+// 以下就是面向对象了
+// **？：**话说为啥不用Controller类？
+let model = new Model({
+    data: {
+        name: '',
+        number: 0,
+        id: ''
+    },
+    resource: 'books'
+})
+
+let view = new View({
     el: '#app',
     template: `
     <div>
@@ -82,14 +102,8 @@ let view = {
         <button id="minusOne">减一</button>
         <button id="reset">归零</button>
     </div>
-    `,
-    render(data) {
-        let html = this.template.replace('__name__', data.name)
-            .replace('__number__', data.number)
-
-        $(this.el).html(html)
-    }
-}
+    `
+})
 
 let controller = {
     init(options) {
