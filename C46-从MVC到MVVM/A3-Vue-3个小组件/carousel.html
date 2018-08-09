@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简单轮播</title>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <style>
+        .slides {
+            display: flex;
+            transition: all 1s;
+        }
+        
+        .window {
+            
+            width: 400px;
+            height: 300px;
+            border: 1px solid black;
+            overflow: hidden;
+            margin: 100px auto;
+        }
+        .button {
+            display: flex;
+            justify-content: center;
+            margin-top: -60px;
+        }
+        .button button {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        let view = new Vue({
+            el: '#app',
+            data: {
+                transformValue: '',
+                imgUrls: ['./img/1.jpg','./img/2.jpg','./img/3.jpg']
+            },
+            template: `
+            <div>
+                <div class="window">
+                    <div class="slides" :style="{transform:transformValue}">
+                        <img :src="url" alt="" v-for="url in imgUrls">
+                    </div>
+                </div>
+                <div class="button">
+                    <button v-on:click="go(0)">1</button>
+                    <button v-on:click="go(1)">2</button>
+                    <button v-on:click="go(2)">3</button>
+                </div>
+            </div>
+            `,
+            methods: {
+                go(index) {
+                    this.transformValue = `translateX(${-400*index}px)`
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
