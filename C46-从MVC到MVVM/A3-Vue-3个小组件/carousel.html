@@ -37,13 +37,16 @@
     <div id="app">
 
     </div>
+
     <script>
         let view = new Vue({
             el: '#app',
             data: {
                 transformValue: '',
-                imgUrls: ['./img/1.jpg','./img/2.jpg','./img/3.jpg']
+                imgUrls: ['./img/1.jpg','./img/2.jpg','./img/3.jpg'],
+                buttons: [1,2,3]
             },
+            // 当你把按钮给循环了，那么就能根据imgUrls生成相应的按钮了
             template: `
             <div>
                 <div class="window">
@@ -52,9 +55,9 @@
                     </div>
                 </div>
                 <div class="button">
-                    <button v-on:click="go(0)">1</button>
-                    <button v-on:click="go(1)">2</button>
-                    <button v-on:click="go(2)">3</button>
+                <button v-on:click="go(button-1)" 
+                        v-for="button in buttons">{{button}}</button>
+                    
                 </div>
             </div>
             `,
